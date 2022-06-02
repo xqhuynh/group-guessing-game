@@ -10,11 +10,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("server/public"));
 
 const randomNumber = Math.floor(Math.random() * (25 - 1 + 1) + 1);
+const firstPersonGuess = [];
 
 // GET & POST Routes go here
+// POST route
 app.post("/game", (req, res) => {
-  let newNumbers = req.body;
-  console.log("New numbers added", newNumbers);
+  let num1 = req.body.num1;
+  console.log("Random number is: ", randomNumber);
+
+  if (randomNumber != num1) {
+    firstPersonGuess.push(num1);
+  }
+});
+
+// GET route
+app.get("/game", (req, res) => {
+  res.send(firstPersonGuess);
 });
 
 app.listen(PORT, () => {

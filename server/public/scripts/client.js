@@ -1,36 +1,47 @@
 $(document).ready(handleReady);
 
 function handleReady() {
+  getNumbers();
   console.log("jquery is loaded!");
-  console.log(randomNumber);
   $(".submitBtn").on("click", submitBtnHandler);
 }
 
 function submitBtnHandler() {
   let num1 = $(".numberInput1").val();
-  let num2 = $(".numberInput2").val();
-  let numberObject = {
-    num1: num1,
-    num2: num2,
-  };
 
+  let objectToSend = {
+    num1: num1,
+  };
+  // Clear inputs after submit
+  $(".clearInput").val("");
   // Ajax POST call
   $.ajax({
     method: "POST",
     url: "/game",
-    data: numberObject,
+    data: objectToSend,
   })
     .then((response) => {
       console.log("in submitBtnHandler", response);
+
       // Refresh data after submit button clicked
       getNumbers();
-      // Clear inputs after submit
-      $(".numberInput1").val("");
-      $(".numberInput2").val("");
     })
     .catch((err) => {
       console.log("POST function failed", err);
     });
 }
 
-function getNumbers() {}
+function getNumbers(response) {
+  $("#guessOutput").empty();
+  $.ajax({
+    method: "GET",
+    url: "/game",
+  }).then((response) => {
+    console.log(response);
+    $("#guessOutput").append(`
+        <ul>
+          <li>Guesses are: ${response}</li>
+        </ul>
+    `);
+  });
+}
