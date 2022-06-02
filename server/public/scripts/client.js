@@ -22,9 +22,8 @@ function submitBtnHandler() {
   })
     .then((response) => {
       console.log("in submitBtnHandler", response);
-
       // Refresh data after submit button clicked
-      getNumbers();
+      getNumbers(response);
     })
     .catch((err) => {
       console.log("POST function failed", err);
